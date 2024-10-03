@@ -1,0 +1,324 @@
+! Dont run the installation of venv from Visual Studio Code, there is not enoght resourses !
+
+##sudo apt-get -y install ninja-build
+sudo apt-get install -y rustc
+sudo apt-get install -y cargo
+##pip install  flash-attn ninja
+
+
+# close docker or each unrequiring proccess
+export MAKEFLAGS="-j$(nproc)"
+sudo sysctl net.ipv6.conf.all.disable_ipv6=1
+
+
+^
+# https://github.com/NVIDIA/NeMo
+
+
+
+https://deeptalk.lambdalabs.com/t/tranformer-engine-installation-fails/3756/2
+
+# To write each branch version and each dependency version
+
+**based on https://github.com/NVIDIA/NeMo/blob/main/Dockerfile
+*** apply it as docker and also jenkins
+
+
+Install CUDA CuDNN NvidiaContainer
+
+
+sudo apt-get update -y
+sudo apt-get upgrade -y
+export DEBIAN_FRONTEND=noninteractive
+sudo apt-get install -y libsndfile1 sox libfreetype6 swig ffmpeg libavdevice-dev
+sudo rm -rf /var/lib/apt/lists/*
+
+sudo apt-get update
+sudo apt-get install -y  libtool  libltdl-dev  automake autoconf bison flex  tcl ghostscript libgd-dev  fontconfig  libcairo2-dev libpango1.0-dev  libgts-dev
+sudo rm -rf /var/lib/apt/lists/*
+
+sudo apt-get update
+sudo apt-get install python3 python3-pip python3-venv python3-wheel  -y
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install --upgrade pip
+
+
+pip install --upgrade wheel python-docx Cython PYYAML setuptools packaging pybind11
+pip install git+https://github.com/NVIDIA/cudnn-frontend.git
+
+
+pip install torch torchtext torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+
+git clone https://github.com/NVIDIA/Megatron-LM.git 
+cd Megatron-LM
+git checkout 36e9b6bf3d8034b10c9bbd9fc357c2df2bd1515c
+pip install .
+cd ..
+
+
+git clone https://github.com/NVIDIA/apex.git
+cd apex
+git checkout f058162b215791b15507bb542f22ccfde49c872d
+*edit!!! setup.py
+pip install -v --no-build-isolation --disable-pip-version-check --no-cache-dir --config-settings "--build-option=--cpp_ext --cuda_ext --fast_layer_norm --distributed_adam --deprecated_fused_adam" ./
+cd ..
+
+**fix here
+
+
+
+
+git fetch origin stable
+
+
+
+git clone https://github.com/NVIDIA/TransformerEngine.git 
+cd TransformerEngine
+#git fetch origin main
+		git fetch origin release_v1.4
+git fetch origin da30634a6c9ccdbb6c587b6c93b1860e4b038204
+git checkout FETCH_HEAD
+git submodule init
+git submodule update --init --recursive
+#NVTE_FRAMEWORK=pytorch NVTE_WITH_USERBUFFERS=1 MPI_HOME=/usr/local/mpi pip install . --config-settings "--global-option=--debug"
+NVTE_FRAMEWORK=pytorch pip install . --config-settings "--global-option=--debug"
+cd ..
+
+**^^^fixed ^^^ ****
+
+
+
+pip uninstall -y sacrebleu torchtext
+
+# install flash attention
+pip install flash-attn
+# install numba for latest containers
+pip install numba>=0.57.1
+# install ammo
+pip install nvidia-ammo~=0.7.0 --extra-index-url https://pypi.nvidia.com --no-cache-dir
+
+
+
+# Install NeMo
+pip install ".[all]"
+
+
+
+# Check install
+RUN python -c "import nemo.collections.nlp as nemo_nlp" && \
+  python -c "import nemo.collections.tts as nemo_tts" && \
+  python -c "import nemo_text_processing.text_normalization as text_normalization"
+
+
+
+
+
+
+
+
+
+
+
+# pip install nemo_toolkit['all']
+
+
+git clone https://github.com/NVIDIA/NeMo
+cd NeMo
+pip install .[]
+#python setup.py install 
+./reinstall.sh
+cd ..
+
+# change to clone with changing to the right repository
+git clone https://github.com/NVIDIA/apex.git
+cd apex
+git checkout b496d85fb88a801d8e680872a12822de310951fd
+*delete the lines from setup.py
+    if (bare_metal_version != torch_binary_version):
+        raise RuntimeError(
+            "Cuda extensions are being compiled with a version of Cuda that does "
+            "not match the version used to compile Pytorch binaries.  "
+            "Pytorch binaries were compiled with Cuda {}.\n".format(torch.version.cuda)
+            + "In some cases, a minor-version mismatch will not cause later errors:  "
+            "https://github.com/NVIDIA/apex/pull/323#discussion_r287021798.  "
+            "You can try commenting out this check (at your own risk)."
+        ) 
+*
+pip install -v --no-build-isolation --disable-pip-version-check --no-cache-dir --config-settings "--build-option=--cpp_ext --cuda_ext --fast_layer_norm --distributed_adam --deprecated_fused_adam" ./
+cd ..
+ 
+
+https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/installation.html
+# pip install --upgrade git+https://github.com/NVIDIA/TransformerEngine.git@stable
+pip install git+https://github.com/NVIDIA/TransformerEngine.git@main
+
+# Clone repository, checkout stable branch, clone submodules
+git clone --branch stable --recursive https://github.com/NVIDIA/TransformerEngine.git
+
+
+
+
+
+>  Continue from here
+
+https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/installation.html
+
+
+https://docs.nvidia.com/deeplearning/transformer-engine/user-guide/installation.html
+
+
+# Clone repository, checkout stable branch, clone submodules
+git clone --branch stable --recursive https://github.com/NVIDIA/TransformerEngine.git
+
+cd TransformerEngine
+export NVTE_FRAMEWORK=pytorch   # Optionally set framework
+git submodule update --init --recursive
+pip install .                   # Build and install              # Build and install
+            *install rust
+            NVTE_FRAMEWORK=pytorch  pip install git+https://github.com/NVIDIA/TransformerEngine.git@stable --config-settings="---global-option=--debug"
+
+
+
+! before installing transformer-engine
+
+sudo apt-get install cmake
+
+
+
+
+pip install gradio==3.34.0
+
+# not needed
+pip install flash-attn
+pip install triton==2.0.0.dev20221202
+
+
+
+
+
+
+
+
+
+
+
+
+option2, follow this file and apply it commands
+https://github.com/NVIDIA/NeMo/blob/main/Jenkinsfile
+set jenkins and network for it and for docker another outputs (try not to set network as honme
+new check jenkinsfile and dockerfile
+
+
+
+
+# curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# https://stackoverflow.com/questions/75085152/cant-find-rust-compiler-to-install-transformers
+
+
+
+
+
+usr/bin/cmake', '-S', '/mnt/c/src/projects/NvidiaNeMo/NemoTry1/TransformerEngine/transformer_engine', '-B', '/tmp/tmpg4unh1bo', '-DPython_EXECUTABLE=/mnt/c/src/projects/NvidiaNeMo/NemoTry1/venv/bin/python', '-DPython_INCLUDE_DIR=/mnt/c/src/projects/NvidiaNeMo/NemoTry1/venv/include', '-DCMAKE_BUILD_TYPE=Release', '-DCMAKE_INSTALL_PREFIX=/mnt/c/src/projects/NvidiaNeMo/NemoTry1/TransformerEngine/build/lib.linux-x86_64-cpython-310', '-DNVTE_WITH_USERBUFFERS=ON', '-Dpybind11_DIR=/mnt/c/src/projects/NvidiaNeMo/NemoTry1/venv/lib/python3.10/site-packages/pybind11/share/cmake/pybind11']' returned non-zero exit status 1.
+
+
+
+
+
+
+
+
+git clone https://github.com/NVIDIA/gdrcopy.git
+cd gdrcopy
+sudo make PREFIX=/usr/local CUDA=/usr/local/cuda install
+
+
+
+export TORCH_CUDA_ARCH_LIST=9.0
+export CUDA_LAUNCH_BLOCKING=1
+
+export CUDA_PATH=/usr/local/cuda
+export DEBIAN_FRONTEND=noninteractive
+export CUDNN_PATH=/usr/local/cuda
+export CUDA_HOME=/usr/local/cuda
+
+export PATH=$PATH:$CUDA_HOME/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64
+export GDRCOPY_LIBRARY_DIR=/usr/local/lib
+
+export NVTE_FRAMEWORK=pytorch pip
+#export GDRCOPY_LIBRARY_DIR=/usr/local/lib64
+
+
+
+
+git clone https://github.com/NVIDIA/TransformerEngine.git 
+cd TransformerEngine
+git fetch origin main
+#git fetch origin da30634a6c9ccdbb6c587b6c93b1860e4b038204
+git checkout FETCH_HEAD
+git submodule init && git submodule update
+#NVTE_FRAMEWORK=pytorch NVTE_WITH_USERBUFFERS=1 MPI_HOME=/usr/local/mpi pip install . --config-settings="---global-option=--debug"
+NVTE_FRAMEWORK=pytorch pip install . --config-settings="---global-option=--debug"
+cd ..
+
+**^^^fixed ^^^ ****
+
+
+
+"""
+** before tranformers engine
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+rustup install stable
+		sudo apt-get install rustc
+
+
+git clone https://github.com/NVIDIA/TransformerEngine.git
+cd TransformerEngine
+git fetch origin 8c9abbb80dba196f086b8b602a7cf1bce0040a6a
+git checkout FETCH_HEAD 
+git submodule init && git submodule update
+NVTE_FRAMEWORK=pytorch pip install . --config-settings="---global-option=--debug"
+# to check
+TransformerEngine
+
+
+https://dev.to/emilossola/troubleshooting-guide-fixing-error-cant-find-rust-compiler-1pad
+# NVTE_FRAMEWORK=pytorch NVTE_WITH_USERBUFFERS=1 MPI_HOME=/usr/local/mpi pip install . --global-option=--debug
+NVTE_FRAMEWORK=pytorch NVTE_WITH_USERBUFFERS=1 MPI_HOME=/usr/local/mpi pip install . --config-settings="--global-option=--debug"
+"""
+* fix sysconfig.get_path('include') to include in venv
+
+
+
+
+
+
+
+
+
+https://github.com/tauri-apps/tauri/issues/4428
+?no  pip install cargo 
+? sudo apt  install cargo
+https://github.com/jetsonhacks/buildLibrealsense2TX/issues/13
+#NVTE_FRAMEWORK=pytorch  pip install git+https://github.com/NVIDIA/TransformerEngine.git@stable --global-option=--debug
+#NVTE_FRAMEWORK=pytorch  pip install git+https://github.com/NVIDIA/TransformerEngine.git@main --global-option=--debug
+#NVTE_FRAMEWORK=pytorch NVTE_WITH_USERBUFFERS=1 MPI_HOME=/usr/bin/mpicc pip install . --global-option=--debug
+NVTE_FRAMEWORK=pytorchc pip install . --global-option=--debug
+!!!
+
+?? no
+
+
+
+https://github.com/NVIDIA/FasterTransformer/issues/542
+
+sudo apt install openmpi-bin openmpi-common libopenmpi-dev
+
+
+
+
+
+
+? 
